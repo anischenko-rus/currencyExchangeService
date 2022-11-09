@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="wrapper">
+        <p>Количество</p>
+        <input id="amountOfCurrency" type="number">
+        <p>Выберете обмениваемую валюту</p>
+        <select name="currencyToConvert" id="currencyToConvert">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="RUB">RUB</option>
+        </select>
+        <p>Выберите получаемую валюту</p>
+         <select name="currencyToWhichWeWillTransfer" id="currencyToWhichWeWillTransfer">
+             <option value="EUR">EUR</option>
+             <option value="USD">USD</option>
+             <option value="RUB">RUB</option>
+         </select>
+        <button id="submit">
+            Отправить
+        </button>
+
+    </div>
+    <p>Result: <b id="result">Empty</b></p>
+     <style>
+        #wrapper {
+            display: block;
+        }
+
+        button {
+            margin-top: 20px;
+            display: block;
+        }
+    </style>
+    <script>
+        document.getElementById('submit').addEventListener('click', async () => {
+            const currencyToWhichWeWillTransfer = document.getElementById('currencyToWhichWeWillTransfer')?.value;
+            const currencyToConvert = document.getElementById('currencyToConvert')?.value;
+            const amountOfCurrency = document.getElementById('amountOfCurrency')?.value;
+            document.getElementById('result').innerHTML = 'loading';
+            try {
+                const result = await (await fetch(`/api/v1/exchange?currencyToConvert=${currencyToConvert}&amountOfCurrency=${amountOfCurrency}&currencyToWhichWeWillTransfer=${currencyToWhichWeWillTransfer}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })).json();
+                document.getElementById('result').innerHTML = result?.amountAtTheExchangeRate || 'error';
+            } catch {
+                document.getElementById('result').innerHTML = 'error';
+            }
+        })
+    </script>
+</body>
+</html>

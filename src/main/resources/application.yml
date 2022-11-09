@@ -1,0 +1,12 @@
+feign:
+  client:
+    config:
+      default:
+        readTimeout: 1500
+        connectTimeout: 500
+
+currency-api:
+  base:
+    url: https://openexchangerates.org/api/
+  name: feignCurrencyService
+  app_id: 3c76b3ac8e774c51b1f6cbac021c1bf5
